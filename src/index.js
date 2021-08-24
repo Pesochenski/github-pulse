@@ -8,11 +8,16 @@ const processingData = require("./data/dataProcessing");
 module.exports = async function getPinned(userName) {
   const pinned = [];
 
-  const { data } = await getData.getHTML(userName);
-  const repoNames = processingData.createRepoNames(data);
+  const res = await getData.getHTML(userName);
 
-  for (let i = 0; i < repoNames.length; i++) {
-    await getData.getRepo(userName, repoNames[i]).then((item) => pinned.push(item.data));
+  if (res.status === 200) {
+    const repoNames = processingData.createRepoNames(res.data);
+
+    for (let i = 0; i < repoNames.length; i++) {
+      await getData.getRepo(userName, repoNames[i]).then((item) => pinned.push(item.data));
+    }
+  } else {
+    return new Error("Connection error");
   }
 
   return pinned;
