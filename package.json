@@ -1,16 +1,28 @@
 {
   "name": "gh-pinned",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "NPM package for pinned github repos",
+  "main": "src/index.js",
+  "keywords": [
+    "Github",
+    "npm",
+    "plugin",
+    "package"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node src/index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Pesochenski <pesochenski.corp@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
     "node-html-parser": "^4.1.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.1",
+    "prettier": "^2.3.2"
   }
 }
