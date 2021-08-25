@@ -1,0 +1,9 @@
+/node_modules
+
+*.log
+
+.eslintrc.json
+.eslintignore
+
+.prettierrc
+.prettierignore
