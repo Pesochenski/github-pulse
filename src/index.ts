@@ -17,10 +17,11 @@ export async function getPinned(userName: string): Promise<RepoInterface[] | Err
   const res = await getData.getHTML(userName);
 
   if (res.status === 200) {
-    const repoNames = processingData.createRepoNames(res.data);
+    const repoNames: string[] = processingData.createRepoNames(res.data);
 
     for (let i = 0; i < repoNames.length; i++) {
-      await getData.getRepo(userName, repoNames[i]).then((item: any) => pinned.push(item.data));
+      const { data } = await getData.getRepo(userName, repoNames[i]);
+      pinned.push(data);
     }
   } else {
     throw new Error("Connection error");
@@ -29,4 +30,4 @@ export async function getPinned(userName: string): Promise<RepoInterface[] | Err
   return pinned;
 }
 
-// getPinned("Pesochenski").then((pinned) => console.log(pinned));
+// getPinned("octocat").then((pinned) => console.log(pinned));
