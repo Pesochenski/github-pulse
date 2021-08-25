@@ -29,4 +29,4 @@ export async function getPinned(userName: string): Promise<RepoInterface[] | Err
   return pinned;
 };
 
-// getPinned("Pesochenski").then((pinned) => console.log(pinned));
+getPinned("Pesochenski").then((pinned) => console.log(pinned));

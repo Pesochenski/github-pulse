@@ -1,18 +1,17 @@
 {
   "name": "gh-pinned",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NPM package for pinned github repos",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "type": "module",
   "keywords": [
     "Github",
-    "npm",
-    "plugin",
     "package",
     "pins",
     "repo",
-    "repositories"
+    "repositories",
+    "pinned"
   ],
   "scripts": {
     "start": "node --loader ts-node/esm src/index.ts",
