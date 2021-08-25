@@ -4,17 +4,25 @@
   "description": "NPM package for pinned github repos",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "type": "module",
   "keywords": [
     "Github",
     "npm",
     "plugin",
-    "package"
+    "package",
+    "pins",
+    "repo",
+    "repositories"
   ],
   "scripts": {
     "start": "node --loader ts-node/esm src/index.ts",
     "build": "tsc"
   },
   "author": "Pesochenski <pesochenski.corp@gmail.com>",
+  "repository": {
+    "type": "git",
+    "directory": "https://github.com/Pesochenski/gh-pinned.git"
+  },
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",

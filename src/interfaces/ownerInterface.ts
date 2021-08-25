@@ -1,4 +1,4 @@
-export interface ownerInterface {
+export interface OwnerInterface {
   login: string;
   id: number;
   node_id: string;

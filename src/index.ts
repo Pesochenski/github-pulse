@@ -1,4 +1,4 @@
-import { repoInterface } from "./interfaces/dataInterfaces/repoInterface";
+import { RepoInterface } from "./interfaces/repoInterface";
 
 const getData = require("./api/dataQuery");
 const processingData = require("./data/dataProcessing");
@@ -7,9 +7,12 @@ const processingData = require("./data/dataProcessing");
  * Async function
  * @param {string} userName Github username
  */
-// module.exports = 
-module.exports = async function getPinned(userName: string): Promise<repoInterface[] | Error> {
-  const pinned: repoInterface[] = [];
+export async function getPinned(userName: string): Promise<RepoInterface[] | Error> {
+  const pinned: RepoInterface[] = [];
+
+  if (userName === "") {
+    throw new Error("No any username");
+  };
 
   const res = await getData.getHTML(userName);
 
@@ -20,10 +23,10 @@ module.exports = async function getPinned(userName: string): Promise<repoInterfa
       await getData.getRepo(userName, repoNames[i]).then((item: any) => pinned.push(item.data));
     }
   } else {
-    return new Error("Connection error");
+    throw new Error("Connection error");
   }
 
   return pinned;
 };
 
-// getPinned("Pesochenski").then((pinned) => console.log(pinned));
+getPinned("Pesochenski").then((pinned) => console.log(pinned));

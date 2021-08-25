@@ -1,11 +1,11 @@
-import { ownerInterface } from "./additionalRepoInterfaces/ownerInterface";
-export interface repoInterface {
+import { OwnerInterface } from "./ownerInterface";
+export interface RepoInterface {
     id: number;
     node_id: string;
     name: string;
     full_name: string;
     private: boolean;
-    owner: ownerInterface;
+    owner: OwnerInterface;
     html_url: string;
     description: string;
     fork: boolean;
