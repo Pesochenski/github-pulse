@@ -17,7 +17,7 @@ This package has **Async function**, named `getPinned`, which returns an **array
 Simple example for ES5+:
 
 ```JavaScript
-const getPinned = require("gh-pinned");
+const { getPinned } = require("gh-pinned");
 
 async function foo(username) {
   const pinned = await getPinned(username);
@@ -30,7 +30,7 @@ foo("octocat"); // [...]
 Another method to get result:
 
 ```JavaScript
-const getPinned = require("gh-pinned");
+const { getPinned } = require("gh-pinned");
 
 getPinned("octocat")
   .then((pinned) => console.log(pinned)); // [...]
