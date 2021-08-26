@@ -1,6 +1,6 @@
 const { parse } = require("node-html-parser");
 
-module.exports = {
+export const processingData = {
   createRepoNames: (data: string) => {
     const repoNames: string[] = parse(data)
       .querySelectorAll(".repo")

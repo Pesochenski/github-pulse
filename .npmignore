@@ -1,4 +1,5 @@
 /node_modules
+/tests
 
 *.log
 
@@ -7,3 +8,7 @@
 
 .prettierrc
 .prettierignore
+
+README.md
+
+jest.config.js

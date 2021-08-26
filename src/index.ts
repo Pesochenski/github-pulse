@@ -1,7 +1,7 @@
 import { RepoInterface } from "./interfaces/repoInterface";
 
-const getData = require("./api/dataQuery");
-const processingData = require("./data/dataProcessing");
+import { getData } from "./api/dataQuery";
+import { processingData } from "./data/dataProcessing";
 
 /**
  * Async function
@@ -30,4 +30,4 @@ export async function getPinned(userName: string): Promise<RepoInterface[] | Err
   return pinned;
 }
 
-// getPinned("octocat").then((pinned) => console.log(pinned));
+// getPinned("Pesochenski").then((pinned) => console.log(pinned));

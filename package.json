@@ -1,6 +1,6 @@
 {
   "name": "gh-pinned",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "NPM package for pinned github repos",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,7 +14,8 @@
   ],
   "scripts": {
     "start": "node --loader ts-node/esm src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "author": "Pesochenski <pesochenski.corp@gmail.com>",
   "repository": {
@@ -27,6 +28,8 @@
     "node-html-parser": "^4.1.3"
   },
   "devDependencies": {
+    "@types/babel__generator": "^7.6.3",
+    "@types/jest": "^27.0.1",
     "@types/node": "^16.7.1",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
@@ -34,7 +37,9 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.1",
+    "jest": "^27.0.6",
     "prettier": "^2.3.2",
+    "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1"
   }
 }

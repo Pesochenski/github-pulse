@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-module.exports = {
+export const getData = {
   getHTML: (userName: string) => {
     return axios.get(`https://github.com/${userName}`).catch((err: Error) => err);
   },

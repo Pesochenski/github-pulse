@@ -20,6 +20,6 @@
     "rules": {
       "no-unused-vars": 1,
       "require-jsdoc": 0,
-      "camelcase": 1
+      "camelcase": 0
     }
 }
