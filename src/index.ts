@@ -31,7 +31,7 @@ export async function getPinned(userName: string): Promise<RepoInterface[] | Err
 }
 
 /**
- * Returns repository structure in object
+ * Returns repository files and folders in object
  * @param {string} userName Github account userName
  * @param {string} userRepo Github repository name
  */
@@ -40,7 +40,7 @@ export async function getRepoStructure(userName: string, userRepo: string): Prom
   const scrapingLink: string = `${userName}/${userRepo}`;
 
   if (userName === "") {
-    throw new Error("No any username");
+    throw new Error("No any name");
   } else if (userRepo === "") {
     throw new Error("No any repo name");
   }
@@ -50,12 +50,14 @@ export async function getRepoStructure(userName: string, userRepo: string): Prom
   if (res.status === 200) {
     const { parsedFolders, parsedFiles } = processingData.createRepoContent(res.data);
 
-    repoStructure.innerFolders = {};
+    // repoStructure.innerFolders = {};
+
+    repoStructure.innerFolers = parsedFolders;
     repoStructure.innerFiles = parsedFiles;
 
-    for (const item of parsedFolders) {
-      repoStructure.innerFolders[item] = {};
-    }
+    // for (const item of parsedFolders) {
+    //   repoStructure.innerFolders[item] = {};
+    // }
 
     // while (parsedFolders.length >= 1) {
 
