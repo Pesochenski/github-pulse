@@ -70,7 +70,7 @@ export async function getRepoContent(userName: string, userRepo: string): Promis
 }
 
 // getPinned("Pesochenski").then((pinned) => console.log(pinned));
-getRepoContent("octocat", "linguist").then((repoContent) => console.log(repoContent));
+// getRepoContent("octocat", "linguist").then((repoContent) => console.log(repoContent));
 
 // getRepoStructure like idea
 

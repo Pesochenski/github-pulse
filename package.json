@@ -1,6 +1,6 @@
 {
   "name": "github-pulse",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "NPM package with some additional opportunities for GitHub",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
