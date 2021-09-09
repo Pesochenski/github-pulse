@@ -1,8 +1,11 @@
-# Github pinned repositories
+# Github additional opportunities
+
+[![Node](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/en/)
+![CODE SIZE](https://img.shields.io/github/languages/code-size/Pesochenski/github-pulse?style=for-the-badge)
 
 ## Description
 
-This is simple to use NPM package, which can help you to get only pinned repositories of any Github account.
+This is simple to use NPM package for Node.js, which give you some more possibilities for work with GitHub
 
 ## Docs
 
@@ -12,12 +15,26 @@ Installation:
 npm i gh-pinned
 ```
 
-This package has **Async function**, named `getPinned`, which returns an **array of objects** with full information about each pinned repo, like on [Github API](https://docs.github.com/en/rest/reference/repos#get-a-repository), or **Connection error**, if you input non existing username or have no internet connection, so there are examples, how you have to use it.
+Testing:
 
-Simple example for ES5+:
+```
+npm run test
+```
+
+Building:
+
+```
+npm run build
+```
+
+### getPinned
+
+**Async function**, returns full information only about pinned user's repositories in array
+
+First example:
 
 ```JavaScript
-const { getPinned } = require("gh-pinned");
+const { getPinned } = require("github-pulse");
 
 async function foo(username) {
   const pinned = await getPinned(username);
@@ -27,13 +44,49 @@ async function foo(username) {
 foo("octocat"); // [...]
 ```
 
-Another method to get result:
+Second example:
 
 ```JavaScript
-const { getPinned } = require("gh-pinned");
+const { getPinned } = require("github-pulse");
 
 getPinned("octocat")
   .then((pinned) => console.log(pinned)); // [...]
+```
+
+### getRepoContent
+
+**Async function**, returns an object with two string arrays: innerFolders and innerFiles
+
+First example:
+
+```JavaScript
+const { getRepoContent } = require("github-pulse");
+
+async function bar(username, reponame) {
+  const repoContent = await getRepoContent(username, reponame);
+  console.log(repoContent);
+};
+
+bar("octocat", "linguist");
+
+// {
+//   innerFolders: [...],
+//   innerFiles: [...],
+// }
+```
+
+Second example:
+
+```JavaScript
+const { getRepoContent } = require("github-pulse");
+
+getRepoContent("octocat", "linguist")
+  .then((repoContent) => console.log(repoContent));
+
+// {
+//   innerFolders: [...],
+//   innerFiles: [...],
+// }
 ```
 
 ## License

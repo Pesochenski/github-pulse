@@ -35,8 +35,8 @@ export async function getPinned(userName: string): Promise<RepoInterface[] | Err
  * @param {string} userName Github account userName
  * @param {string} userRepo Github repository name
  */
-export async function getRepoStructure(userName: string, userRepo: string): Promise<object> {
-  const repoStructure: any = {};
+export async function getRepoContent(userName: string, userRepo: string): Promise<object> {
+  const repoContent: any = {};
   const scrapingLink: string = `${userName}/${userRepo}`;
 
   if (userName === "") {
@@ -52,8 +52,8 @@ export async function getRepoStructure(userName: string, userRepo: string): Prom
 
     // repoStructure.innerFolders = {};
 
-    repoStructure.innerFolers = parsedFolders;
-    repoStructure.innerFiles = parsedFiles;
+    repoContent.innerFolers = parsedFolders;
+    repoContent.innerFiles = parsedFiles;
 
     // for (const item of parsedFolders) {
     //   repoStructure.innerFolders[item] = {};
@@ -66,11 +66,13 @@ export async function getRepoStructure(userName: string, userRepo: string): Prom
     throw new Error("Connection error");
   }
 
-  return repoStructure;
+  return repoContent;
 }
 
 // getPinned("Pesochenski").then((pinned) => console.log(pinned));
-// getRepoStructure("Pesochenski", "gh-pinned").then((output) => console.log(output));
+getRepoContent("octocat", "linguist").then((repoContent) => console.log(repoContent));
+
+// getRepoStructure like idea
 
 // {
 //   innerFolders: {
