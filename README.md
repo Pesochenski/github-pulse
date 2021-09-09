@@ -12,7 +12,7 @@ This is simple to use NPM package for Node.js, which give you some more possibil
 Installation:
 
 ```
-npm i gh-pinned
+npm i github-pulse
 ```
 
 Testing:
