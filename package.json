@@ -1,16 +1,14 @@
 {
-  "name": "gh-pinned",
+  "name": "github-pulse",
   "version": "1.0.5",
-  "description": "NPM package for pinned github repos",
+  "description": "NPM package with some additional opportunities for GitHub",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "keywords": [
     "Github",
     "package",
-    "pins",
     "repo",
-    "repositories",
-    "pinned"
+    "repositories"
   ],
   "scripts": {
     "start": "node --loader ts-node/esm src/index.ts",
@@ -20,7 +18,7 @@
   "author": "Pesochenski <pesochenski.corp@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Pesochenski/gh-pinned.git"
+    "url": "https://github.com/Pesochenski/github-pulse.git"
   },
   "license": "MIT",
   "dependencies": {
