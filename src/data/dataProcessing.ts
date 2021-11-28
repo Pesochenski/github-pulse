@@ -1,3 +1,8 @@
+import { RepoChunkTypeEnum } from "../enums/RepoChunkTypeEnum";
+
+import { RepoChunkInterface } from "../interfaces/dataChunk/repoChunkInterface";
+import { HTMLElement } from "node-html-parser";
+
 const { parse } = require("node-html-parser");
 
 export const processingData = {
@@ -8,33 +13,56 @@ export const processingData = {
 
     return repoNames;
   },
-  createRepoContent: (data: string): { parsedFolders: string[]; parsedFiles: string[] } => {
-    const parsedFiles: string[] = [];
-    const parsedFolders: string[] = [];
+  createRepoContent: (
+    data: string,
+    actualLink: string[]
+  ): {
+    parsedFolders: RepoChunkInterface[];
+    parsedFiles: RepoChunkInterface[];
+  } => {
+    const parsedFiles: RepoChunkInterface[] = [];
+    const parsedFolders: RepoChunkInterface[] = [];
 
     const parsed = parse(data);
 
-    const typings: string[] = parsed
-      .querySelectorAll(".octicon")
-      .filter(
-        (item: HTMLElement) =>
-          item.classList.value.includes("octicon-file") ||
-          item.classList.value.includes("octicon-file-directory")
-      )
+    const chunksInfo: { type: string; name: string }[] = parsed
+      .querySelectorAll(".Box-row")
       .map((item: HTMLElement) => {
-        return item.classList.value.includes("octicon-file") ? "file" : "folder";
+        const type: string = item.querySelector(".octicon").classList.value.includes("octicon-file")
+          ? RepoChunkTypeEnum.FILE
+          : RepoChunkTypeEnum.FOLDER;
+
+        const name: string = item.querySelector(".js-navigation-open").innerText;
+
+        return {
+          type,
+          name,
+        };
       });
 
-    const names: string[] = parsed
-      .querySelectorAll(".js-navigation-open")
-      .filter((item: HTMLElement) => item.classList.value.length === 2)
-      .map((item: HTMLElement) => item.innerText);
-
-    for (let i: number = 0; i < names.length; i++) {
-      if (typings[i] === "folder") {
-        parsedFolders.push(names[i]);
+    for (let i: number = 0; i < chunksInfo.length; i++) {
+      if (chunksInfo[i].type === RepoChunkTypeEnum.FOLDER) {
+        parsedFolders.push({
+          type: chunksInfo[i].type,
+          name: chunksInfo[i].name,
+          inner: {
+            files: [],
+            folders: [],
+          },
+          _folderLinks: [],
+          _actualLink: [...actualLink, chunksInfo[i].name],
+        });
       } else {
-        parsedFiles.push(names[i]);
+        parsedFiles.push({
+          type: chunksInfo[i].type,
+          name: chunksInfo[i].name,
+          inner: {
+            files: [],
+            folders: [],
+          },
+          _folderLinks: [],
+          _actualLink: [...actualLink, chunksInfo[i].name],
+        });
       }
     }
 
