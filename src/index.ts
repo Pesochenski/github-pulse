@@ -44,14 +44,16 @@ export async function getRepoContent(
   const scrapingLink: string[] = [userName, userRepo];
   const repoContent: RepoChunkInterface[] = [
     {
+      id: 0,
+      parentId: null,
       type: RepoChunkTypeEnum.REPO,
       name: userRepo,
       inner: {
         folders: [],
         files: [],
       },
-      _folderLinks: [],
       _actualLink: [...scrapingLink],
+      _folderLinks: [],
     },
   ];
   const contentLink: string[] = [scrapingLink.join("/")];
@@ -63,9 +65,14 @@ export async function getRepoContent(
   }
 
   const repo = await getData.getHTML(scrapingLink.join("/"));
+  console.log(repo.isAxiosError);
 
   if (repo.status === 200) {
-    const { parsedFolders, parsedFiles } = processingData.createRepoContent(repo.data, scrapingLink);
+    const { parsedFolders, parsedFiles } = processingData.createRepoContent(
+      repo.data,
+      repoContent[0].id,
+      repoContent[0]._actualLink
+    );
 
     // const innerQuery = async (chunks: RepoChunkInterface[]): Promise<void> => {
     //   for (let i: number = 0; i < chunks.length; i++) {
@@ -109,8 +116,6 @@ export async function getRepoContent(
       repoContent[0]._folderLinks.push(repoContent[0].inner.folders[i].name);
     }
 
-    // использовать контентЛинк и внутри него проверять на наличие фолдерЛинка чтобы понять надо ли возвращаться на левл выше или нет
-
     // if (repoContent.folders.length > 0) await innerQuery(repoContent);
   } else {
     throw new Error("Connection error");
@@ -119,36 +124,63 @@ export async function getRepoContent(
   return repoContent;
 }
 
+// ===================================================================================================
+// testing export functions
+
 // getPinned("Pesochenski").then((pinned) => console.log(pinned));
+
 const start: number = Date.now();
 
-getRepoContent("octocat", "linguist").then((repoContent) => {
-  const finish = Date.now() - start;
-  console.log(repoContent, finish, "ms ", finish / 1000, "s ");
-});
+// const tree = async () => await getRepoContent("octocat", "linguist");
 
-// async function testing(folders: RepoChunkInterface[]) {
-//   // working with folders arr, where in folder object inner and links are empty
-//   // {
-//   //  type: "FOLDER",
-//   //  name: "test",
-//   //  inner: {
-//   //    folders: [],
-//   //    files: [],
-//   //  },
-//   //  _actualLink: [],
-//   //  _folderLinks: [],
-//   // }
-//
-//   if (!folders.length) {
-//     await
-//   }
-//
-//   for (let i = 0; i < folders.length; i++) {
-//
-//
-//     if (elems[i].name === elems[elems.length - 1].name) {
-//       await testing();
-//     }
-//   }
-// }
+// getRepoContent("octocat", "linguist").then((repoContent) => {
+//   const finish = Date.now() - start;
+//   console.log(repoContent);
+//   console.log(repoContent[0].inner.folders);
+//   console.log(finish, "ms ", finish / 1000, "s ");
+// });
+
+// ===================================================================================================
+
+// ===================================================================================================
+// experiments
+
+const recursive = async (folders: RepoChunkInterface[]) => {
+  // working with folders arr, where in folder object inner and links are empty
+  // {
+  //  id: 11111,
+  //  parentId: 11111,
+  //  type: "FOLDER",
+  //  name: "test",
+  //  inner: {
+  //    folders: [],
+  //    files: [],
+  //  },
+  //  _actualLink: [],
+  // }
+
+  for (let i: number = 0; i < folders.length; i++) {
+    const res = await getData.getHTML(folders[i]._actualLink.join("/"));
+    console.log(res.isAxiosError);
+
+    // const { parsedFolders, parsedFiles } = processingData.createRepoContent(
+    //   response.data,
+    //   folders[i].id,
+    //   folders[i]._actualLink
+    // );
+    // console.log(parsedFiles, parsedFolders);
+
+    //
+    // folders[i].inner.folders = parsedFolders;
+    // folders[i].inner.files = parsedFiles;
+    //
+    // console.log(folders[i]);
+  }
+};
+
+const testing = async () => {
+  const tree = await getRepoContent("octocat", "linguist");
+  await recursive(tree[0].inner.folders);
+};
+
+testing().then((item) => item);

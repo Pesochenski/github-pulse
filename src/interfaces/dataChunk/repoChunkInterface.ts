@@ -1,9 +1,11 @@
 import { InnerChunkInterface } from "./innerChunkInterface";
 
 export interface RepoChunkInterface {
+  id: number;
+  parentId: number | null;
   type: string;
   name: string;
   inner: InnerChunkInterface;
-  _folderLinks: string[];
   _actualLink: string[];
+  _folderLinks: string[];
 }

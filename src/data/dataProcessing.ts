@@ -15,6 +15,7 @@ export const processingData = {
   },
   createRepoContent: (
     data: string,
+    parentId: number,
     actualLink: string[]
   ): {
     parsedFolders: RepoChunkInterface[];
@@ -43,25 +44,29 @@ export const processingData = {
     for (let i: number = 0; i < chunksInfo.length; i++) {
       if (chunksInfo[i].type === RepoChunkTypeEnum.FOLDER) {
         parsedFolders.push({
+          id: Number(Date.now()),
+          parentId: parentId,
           type: chunksInfo[i].type,
           name: chunksInfo[i].name,
           inner: {
             files: [],
             folders: [],
           },
-          _folderLinks: [],
           _actualLink: [...actualLink, chunksInfo[i].name],
+          _folderLinks: [],
         });
       } else {
         parsedFiles.push({
+          id: Number(Date.now()),
+          parentId: parentId,
           type: chunksInfo[i].type,
           name: chunksInfo[i].name,
           inner: {
             files: [],
             folders: [],
           },
-          _folderLinks: [],
           _actualLink: [...actualLink, chunksInfo[i].name],
+          _folderLinks: [],
         });
       }
     }
