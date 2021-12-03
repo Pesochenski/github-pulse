@@ -38,7 +38,7 @@ export async function getPinned(userName: string): Promise<RepoInterface[] | Err
  * @param {string} userName Github account userName
  * @param {string} userRepo Github repository name
  */
-export async function getRepoContent(
+export async function getRepoStructure(
   userName: string,
   userRepo: string
 ): Promise<RepoChunkInterface[]> {
@@ -121,13 +121,13 @@ export async function getRepoContent(
 // const test = async () => {
 //   const start: number = Date.now();
 //
-//   const tree = await getRepoContent("Piterden", "vue-crossword");
+//   const tree = await getRepoStructure("Piterden", "vue-crossword");
 //   console.log(tree);
 //
 //   const finish = Date.now() - start;
 //   console.log(finish, "ms ", finish / 1000, "s ");
 // };
-//
+
 // test();
 
 // ===================================================================================================

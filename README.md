@@ -15,12 +15,6 @@ Installation:
 npm i github-pulse
 ```
 
-Testing:
-
-```
-npm run test
-```
-
 Building:
 
 ```
