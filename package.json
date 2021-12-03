@@ -1,6 +1,6 @@
 {
   "name": "github-pulse",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "NPM package with some additional opportunities for GitHub",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,12 +8,13 @@
     "Github",
     "package",
     "repo",
-    "repositories"
+    "repositories",
+    "tree",
+    "structure"
   ],
   "scripts": {
     "start": "node --loader ts-node/esm src/index.ts",
-    "build": "tsc",
-    "test": "jest"
+    "build": "tsc"
   },
   "author": "Pesochenski <pesochenski.corp@gmail.com>",
   "repository": {
@@ -23,11 +24,10 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
-    "node-html-parser": "^4.1.3"
+    "node-html-parser": "^5.1.0"
   },
   "devDependencies": {
     "@types/babel__generator": "^7.6.3",
-    "@types/jest": "^27.0.1",
     "@types/node": "^16.7.1",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
@@ -35,9 +35,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.1",
-    "jest": "^27.0.6",
     "prettier": "^2.3.2",
-    "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1"
   }
 }

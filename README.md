@@ -15,12 +15,6 @@ Installation:
 npm i github-pulse
 ```
 
-Testing:
-
-```
-npm run test
-```
-
 Building:
 
 ```
@@ -55,38 +49,47 @@ getPinned("octocat")
 
 ### getRepoContent
 
-**Async function**, returns an object with two string arrays: innerFolders and innerFiles
+**Async function**, returns a tree, where each file or folder is an object named chunk
 
 First example:
 
 ```JavaScript
-const { getRepoContent } = require("github-pulse");
+const { getRepoStructure } = require("github-pulse");
 
 async function bar(username, reponame) {
-  const repoContent = await getRepoContent(username, reponame);
-  console.log(repoContent);
+  const tree = await getRepoStructure(username, reponame);
+
+  // returns an array of 1 chunk with type "REPOSITORY"
+  console.log(tree[0]);
 };
 
-bar("octocat", "linguist");
-
-// {
-//   innerFolders: [...],
-//   innerFiles: [...],
-// }
+bar("octocat", "linguist"); // [...]
 ```
 
 Second example:
 
 ```JavaScript
-const { getRepoContent } = require("github-pulse");
+const { getRepoStructure } = require("github-pulse");
 
 getRepoContent("octocat", "linguist")
-  .then((repoContent) => console.log(repoContent));
+  .then((repoContent) => console.log(repoContent)); // [...]
+```
 
-// {
-//   innerFolders: [...],
-//   innerFiles: [...],
-// }
+Chunk: 
+
+```TypeScript
+interface chunk {
+  id: number; // unique
+  parentId: number | null; // null if type = "REPOSITORY"
+  type: string; // "REPOSITORY" | "FILE" | "FOLDER"
+  name: string; 
+  inner: {
+    files: chunk[]; // empty if type = "FILE"
+    folders: chunk[]; // empty if type = "FILE"
+  };
+  _actualLink: string[];
+  _folderLinks: string[]; // empty if type = "FILE"
+}
 ```
 
 ## License
@@ -95,4 +98,4 @@ This package is under the MIT license.
 
 ## Support
 
-If you want to help and you found any error or you know, how you can make code better, please, create an `issue` here or your own branch after `git clone` and then make a `pull request`. I will be very thankfull.
+Pull requests or issues are welcomed

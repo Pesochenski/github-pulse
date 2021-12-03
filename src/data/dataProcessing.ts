@@ -1,43 +1,97 @@
 const { parse } = require("node-html-parser");
 
+import { HTMLElement } from "node-html-parser";
+
+import { RepoChunkTypeEnum } from "../enums/RepoChunkTypeEnum";
+
+import { RepoChunkInterface } from "../interfaces/dataChunk/repoChunkInterface";
+
 export const processingData = {
-  createRepoNames: (data: string): string[] => {
-    const repoNames: string[] = parse(data)
+  parseRepoNames: (data: string): string[] => {
+    return parse(data)
       .querySelectorAll(".repo")
       .map((item: HTMLElement) => item.innerText);
-
-    return repoNames;
   },
-  createRepoContent: (data: string): { parsedFolders: string[]; parsedFiles: string[] } => {
-    const parsedFiles: string[] = [];
-    const parsedFolders: string[] = [];
+  parseRepoContent: (
+    data: string,
+    parentId: number,
+    actualLink: string[],
+    withBranch: boolean = false
+  ): {
+    parsedFolders: RepoChunkInterface[];
+    parsedFiles: RepoChunkInterface[];
+    parsedBranch?: string;
+  } => {
+    const parsedFiles: RepoChunkInterface[] = [];
+    const parsedFolders: RepoChunkInterface[] = [];
+
+    let parsedBranch: string = "";
 
     const parsed = parse(data);
 
-    const typings: string[] = parsed
-      .querySelectorAll(".octicon")
-      .filter(
-        (item: HTMLElement) =>
-          item.classList.value.includes("octicon-file") ||
-          item.classList.value.includes("octicon-file-directory")
-      )
+    let chunksInfo: { type: string; name: string }[] = parsed
+      .querySelectorAll(".Box-row")
       .map((item: HTMLElement) => {
-        return item.classList.value.includes("octicon-file") ? "file" : "folder";
+        const type: string = item
+          .querySelector(".octicon")
+          ?.classList.value.includes("octicon-file")
+          ? RepoChunkTypeEnum.FILE
+          : RepoChunkTypeEnum.FOLDER;
+
+        const name: string | undefined = item
+          .querySelector(".js-navigation-open")
+          ?.innerText.trim();
+
+        return {
+          type,
+          name,
+        };
       });
 
-    const names: string[] = parsed
-      .querySelectorAll(".js-navigation-open")
-      .filter((item: HTMLElement) => item.classList.value.length === 2)
-      .map((item: HTMLElement) => item.innerText);
+    chunksInfo = chunksInfo.filter((item) => !item.name.match(/[.]\s[.]/));
 
-    for (let i: number = 0; i < names.length; i++) {
-      if (typings[i] === "folder") {
-        parsedFolders.push(names[i]);
+    if (withBranch) {
+      parsedBranch = parsed
+        .querySelector(".Layout-main")
+        .querySelector(".css-truncate-target").innerText;
+    }
+
+    for (let i: number = 0; i < chunksInfo.length; i++) {
+      if (chunksInfo[i].type === RepoChunkTypeEnum.FOLDER) {
+        parsedFolders.push({
+          id: Number(Date.now()),
+          parentId: parentId,
+          type: chunksInfo[i].type,
+          name: chunksInfo[i].name,
+          inner: {
+            files: [],
+            folders: [],
+          },
+          _actualLink: withBranch
+            ? [...actualLink, "tree", parsedBranch, chunksInfo[i].name]
+            : [...actualLink, chunksInfo[i].name],
+          _folderLinks: [],
+        });
       } else {
-        parsedFiles.push(names[i]);
+        parsedFiles.push({
+          id: Number(Date.now()),
+          parentId: parentId,
+          type: chunksInfo[i].type,
+          name: chunksInfo[i].name,
+          inner: {
+            files: [],
+            folders: [],
+          },
+          _actualLink: withBranch
+            ? [...actualLink, "tree", parsedBranch, chunksInfo[i].name]
+            : [...actualLink, chunksInfo[i].name],
+          _folderLinks: [],
+        });
       }
     }
 
-    return { parsedFolders, parsedFiles };
+    return withBranch
+      ? { parsedFolders, parsedFiles, parsedBranch }
+      : { parsedFolders, parsedFiles };
   },
 };
