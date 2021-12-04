@@ -23,7 +23,9 @@ npm run build
 
 ### getPinned
 
-**Async function**, returns full information only about pinned user's repositories in array
+**Async function**
+
+Returns full information only about pinned user's repositories in array
 
 First example:
 
@@ -47,32 +49,32 @@ getPinned("octocat")
   .then((pinned) => console.log(pinned)); // [...]
 ```
 
-### getRepoContent
+### getRepoStructureCustom
 
-**Async function**, returns a tree, where each file or folder is an object named chunk
+**Async function**
+
+Returns a tree, where each file or folder is an object named chunk
 
 First example:
 
 ```JavaScript
-const { getRepoStructure } = require("github-pulse");
+const { getRepoStructureCustom } = require("github-pulse");
 
+// returns an array of 1 chunk with type "REPOSITORY"
 async function bar(username, reponame) {
-  const tree = await getRepoStructure(username, reponame);
-
-  // returns an array of 1 chunk with type "REPOSITORY"
-  console.log(tree[0]);
+  return await getRepoStructureCustom(username, reponame);
 };
 
-bar("octocat", "linguist"); // [...]
+console.log(bar("octocat", "linguist")[0]); // [...]
 ```
 
 Second example:
 
 ```JavaScript
-const { getRepoStructure } = require("github-pulse");
+const { getRepoStructureCustom } = require("github-pulse");
 
-getRepoContent("octocat", "linguist")
-  .then((repoContent) => console.log(repoContent)); // [...]
+getRepoStructureCustom("octocat", "linguist")
+  .then((tree) => console.log(tree[0])); // [...]
 ```
 
 Chunk: 
@@ -81,7 +83,7 @@ Chunk:
 interface chunk {
   id: number; // unique
   parentId: number | null; // null if type = "REPOSITORY"
-  type: string; // "REPOSITORY" | "FILE" | "FOLDER"
+  type: string; // "REPOSITORY" | "FILE" | "DIR"
   name: string; 
   inner: {
     files: chunk[]; // empty if type = "FILE"
@@ -89,6 +91,47 @@ interface chunk {
   };
   _actualLink: string[];
   _folderLinks: string[]; // empty if type = "FILE"
+}
+```
+
+### getRepoStructureLight
+
+**Async function**
+
+Similar with "getRepoStructureCustom", but a bit another response structure
+
+Example: 
+
+```JavaScript
+const { getRepoStructureLight } = require("github-pulse");
+
+// returns an array of chunks
+async function bar(username, reponame) {
+  return await getRepoStructureLight(username, reponame);
+};
+
+console.log(bar("octocat", "linguist")); // [...]
+```
+
+Chunk:
+
+```TypeScript
+interface chunk {
+  name: string;
+  path: string;
+  sha: string;
+  size: number;
+  url: string;
+  html_url: string;
+  git_url: string;
+  download_url: string;
+  type: string; // "FILE" | "DIR"
+  _links: {
+    self: string;
+    git: string;
+    html: string;
+  };
+  child_arr: chunk[]; // empty if type = "FILE"
 }
 ```
 

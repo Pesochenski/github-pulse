@@ -4,9 +4,9 @@ import { HTMLElement } from "node-html-parser";
 
 import { RepoChunkTypeEnum } from "../enums/RepoChunkTypeEnum";
 
-import { RepoChunkInterface } from "../interfaces/dataChunk/repoChunkInterface";
+import { RepoCustomChunkInterface } from "../interfaces/customChunkInterface/repoCustomChunkInterface";
 
-export const processingData = {
+export const parsingData = {
   parseRepoNames: (data: string): string[] => {
     return parse(data)
       .querySelectorAll(".repo")
@@ -18,12 +18,12 @@ export const processingData = {
     actualLink: string[],
     withBranch: boolean = false
   ): {
-    parsedFolders: RepoChunkInterface[];
-    parsedFiles: RepoChunkInterface[];
+    parsedFolders: RepoCustomChunkInterface[];
+    parsedFiles: RepoCustomChunkInterface[];
     parsedBranch?: string;
   } => {
-    const parsedFiles: RepoChunkInterface[] = [];
-    const parsedFolders: RepoChunkInterface[] = [];
+    const parsedFiles: RepoCustomChunkInterface[] = [];
+    const parsedFolders: RepoCustomChunkInterface[] = [];
 
     let parsedBranch: string = "";
 
@@ -36,7 +36,7 @@ export const processingData = {
           .querySelector(".octicon")
           ?.classList.value.includes("octicon-file")
           ? RepoChunkTypeEnum.FILE
-          : RepoChunkTypeEnum.FOLDER;
+          : RepoChunkTypeEnum.DIR;
 
         const name: string | undefined = item
           .querySelector(".js-navigation-open")
@@ -57,7 +57,7 @@ export const processingData = {
     }
 
     for (let i: number = 0; i < chunksInfo.length; i++) {
-      if (chunksInfo[i].type === RepoChunkTypeEnum.FOLDER) {
+      if (chunksInfo[i].type === RepoChunkTypeEnum.DIR) {
         parsedFolders.push({
           id: Number(Date.now()),
           parentId: parentId,

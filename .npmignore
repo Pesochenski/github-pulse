@@ -1,5 +1,6 @@
 /node_modules
 /tests
+/src
 
 *.log
 
@@ -10,3 +11,4 @@
 .prettierignore
 
 README.md
+LICENSE.md

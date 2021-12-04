@@ -1,5 +1,5 @@
 export enum RepoChunkTypeEnum {
   REPO = "REPOSITORY",
-  FOLDER = "FOLDER",
+  DIR = "DIR",
   FILE = "FILE",
 };
