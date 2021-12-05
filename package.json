@@ -1,5 +1,5 @@
 {
-  "name": "github-pulse",
+  "name": "@pesochenski/github-pulse",
   "version": "2.1.1",
   "description": "NPM package with some additional opportunities for GitHub",
   "main": "lib/index.js",
@@ -20,6 +20,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Pesochenski/github-pulse.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "license": "MIT",
   "dependencies": {
