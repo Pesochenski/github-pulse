@@ -48,43 +48,41 @@ export async function getPinned(userName: string): Promise<RepoInterface[] | Err
 export async function getRepoStructureCustom(
   userName: string,
   userRepo: string
-): Promise<RepoCustomChunkInterface[] | Error> {
+): Promise<RepoCustomChunkInterface | Error> {
   if (!userName.length) throw new Error("No any account name");
   if (!userRepo.length) throw new Error("No any repo name");
 
   const scrapingLink: string[] = [userName, userRepo];
-  const repoContent: RepoCustomChunkInterface[] = [
-    {
-      id: 0,
-      parentId: null,
-      type: RepoChunkTypeEnum.REPO,
-      name: userRepo,
-      inner: {
-        folders: [],
-        files: [],
-      },
-      _actualLink: [...scrapingLink],
-      _folderLinks: [],
+  const repoContent: RepoCustomChunkInterface = {
+    id: 0,
+    parentId: null,
+    type: RepoChunkTypeEnum.REPO,
+    name: userRepo,
+    inner: {
+      folders: [],
+      files: [],
     },
-  ];
+    _actualLink: [...scrapingLink],
+    _folderLinks: [],
+  };
 
   const repo = await universalFetch(FetchTypeEnum.BROWSER, scrapingLink.join("/"));
 
   if (repo.status === 200) {
     const { parsedFolders, parsedFiles, parsedBranch } = parsingData.parseRepoContent(
       repo.data,
-      repoContent[0].id,
-      repoContent[0]._actualLink,
+      repoContent.id,
+      repoContent._actualLink,
       true
     );
 
-    repoContent[0].inner.folders = parsedFolders;
-    repoContent[0].inner.files = parsedFiles;
-    repoContent[0]._folderLinks = [];
-    if (parsedBranch) repoContent[0]._actualLink.push("tree", parsedBranch);
+    repoContent.inner.folders = parsedFolders;
+    repoContent.inner.files = parsedFiles;
+    repoContent._folderLinks = [];
+    if (parsedBranch) repoContent._actualLink.push("tree", parsedBranch);
 
-    for (let i: number = 0; i < repoContent[0].inner.folders.length; i++) {
-      repoContent[0]._folderLinks.push(repoContent[0].inner.folders[i].name);
+    for (let i: number = 0; i < repoContent.inner.folders.length; i++) {
+      repoContent._folderLinks.push(repoContent.inner.folders[i].name);
     }
 
     const getChunksRecursive = async (folders: RepoCustomChunkInterface[]): Promise<void> => {
@@ -110,8 +108,8 @@ export async function getRepoStructureCustom(
       }
     };
 
-    if (repoContent[0].inner.folders.length) {
-      await getChunksRecursive(repoContent[0].inner.folders);
+    if (repoContent.inner.folders.length) {
+      await getChunksRecursive(repoContent.inner.folders);
     }
   } else {
     throw new Error("Connection error");
@@ -169,8 +167,8 @@ export async function getRepoStructureLight(
 //   // const tree1 = await getRepoStructureCustom("Pesochenski", "Image_collection");
 //   // console.log("done 2", tree1);
 //
-//   const tree2 = await getRepoStructureLight("Pesochenski", "Image_collection");
-//   console.log("done 3", tree2);
+//   // const tree2 = await getRepoStructureLight("Pesochenski", "Image_collection");
+//   // console.log("done 3", tree2);
 //
 //   // const finish = Date.now() - start;
 //   // console.log(finish, "ms ", finish / 1000, "s ");

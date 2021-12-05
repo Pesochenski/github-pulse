@@ -25,6 +25,11 @@ export const parsingData = {
     const parsedFiles: RepoCustomChunkInterface[] = [];
     const parsedFolders: RepoCustomChunkInterface[] = [];
 
+    const parsedArr = {
+      [RepoChunkTypeEnum.DIR.toString()]: parsedFolders,
+      [RepoChunkTypeEnum.FILE.toString()]: parsedFiles,
+    };
+
     let parsedBranch: string = "";
 
     const parsed = parse(data);
@@ -57,37 +62,20 @@ export const parsingData = {
     }
 
     for (let i: number = 0; i < chunksInfo.length; i++) {
-      if (chunksInfo[i].type === RepoChunkTypeEnum.DIR) {
-        parsedFolders.push({
-          id: Number(Date.now()),
-          parentId: parentId,
-          type: chunksInfo[i].type,
-          name: chunksInfo[i].name,
-          inner: {
-            files: [],
-            folders: [],
-          },
-          _actualLink: withBranch
-            ? [...actualLink, "tree", parsedBranch, chunksInfo[i].name]
-            : [...actualLink, chunksInfo[i].name],
-          _folderLinks: [],
-        });
-      } else {
-        parsedFiles.push({
-          id: Number(Date.now()),
-          parentId: parentId,
-          type: chunksInfo[i].type,
-          name: chunksInfo[i].name,
-          inner: {
-            files: [],
-            folders: [],
-          },
-          _actualLink: withBranch
-            ? [...actualLink, "tree", parsedBranch, chunksInfo[i].name]
-            : [...actualLink, chunksInfo[i].name],
-          _folderLinks: [],
-        });
-      }
+      parsedArr[chunksInfo[i].type].push({
+        id: Number(Date.now()),
+        parentId: parentId,
+        type: chunksInfo[i].type,
+        name: chunksInfo[i].name,
+        inner: {
+          files: [],
+          folders: [],
+        },
+        _actualLink: withBranch
+          ? [...actualLink, "tree", parsedBranch, chunksInfo[i].name]
+          : [...actualLink, chunksInfo[i].name],
+        _folderLinks: [],
+      });
     }
 
     return withBranch

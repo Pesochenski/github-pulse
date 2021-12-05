@@ -37,7 +37,7 @@ async function foo(username) {
   console.log(pinned);
 };
 
-foo("octocat"); // [...]
+foo("Pesochenski"); // [...]
 ```
 
 Second example:
@@ -45,7 +45,7 @@ Second example:
 ```JavaScript
 const { getPinned } = require("github-pulse");
 
-getPinned("octocat")
+getPinned("Pesochenski")
   .then((pinned) => console.log(pinned)); // [...]
 ```
 
@@ -60,12 +60,13 @@ First example:
 ```JavaScript
 const { getRepoStructureCustom } = require("github-pulse");
 
-// returns an array of 1 chunk with type "REPOSITORY"
+// returns an object
 async function bar(username, reponame) {
   return await getRepoStructureCustom(username, reponame);
 };
 
-console.log(bar("octocat", "linguist")[0]); // [...]
+// { id: 0, parentId: null, type: "REPOSITRORY", ... }
+console.log(bar("Pesochenski", "Image_collection"));
 ```
 
 Second example:
@@ -73,8 +74,17 @@ Second example:
 ```JavaScript
 const { getRepoStructureCustom } = require("github-pulse");
 
-getRepoStructureCustom("octocat", "linguist")
-  .then((tree) => console.log(tree[0])); // [...]
+getRepoStructureCustom("Pesochenski", "Image_collection")
+  .then((tree) => {
+    // { id: 0, parentId: null, type: "REPOSITRORY", ... }
+    console.log(tree);
+    
+    // [{ id: 12345, parentId: 0, type: "DIR", ... }, ...]
+    console.log(tree.inner.folders)
+
+  // [{ id: 12345, parentId: 0, type: "FILE", ... }, ...]
+  console.log(tree.inner.files)
+  });
 ```
 
 Chunk: 
@@ -110,7 +120,8 @@ async function bar(username, reponame) {
   return await getRepoStructureLight(username, reponame);
 };
 
-console.log(bar("octocat", "linguist")); // [...]
+// [{ name: exampleName, path: https://github.com/path, ... }, ...]
+console.log(bar("octocat", "linguist"));
 ```
 
 Chunk:
